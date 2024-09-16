@@ -13,7 +13,7 @@ function setupServer() {
   app.use(express.json()); 
 
 
-  app.use('/api', contactRoutes); 
+  app.use('/', contactRoutes); 
 
   
   app.use((req, res) => {

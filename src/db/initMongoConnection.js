@@ -7,11 +7,14 @@ async function initMongoConnection() {
     console.error('Missing MongoDB connection environment variables');
     process.exit(1);
   }
-
+  
   const mongoUri = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL}/${MONGODB_DB}?retryWrites=true&w=majority`;
 
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(mongoUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('Mongo connection successfully established!');
   } catch (error) {
     console.error('Mongo connection error:', error.message);
@@ -20,5 +23,6 @@ async function initMongoConnection() {
 }
 
 module.exports = initMongoConnection;
+
 
 
