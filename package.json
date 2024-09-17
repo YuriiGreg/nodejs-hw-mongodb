@@ -1,7 +1,7 @@
 {
   "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000n\u0000o\u0000d\u0000e\u0000j\u0000s\u0000-\u0000h\u0000w\u0000-\u0000m\u0000o\u0000n\u0000g\u0000o\u0000d\u0000b\u0000\r\u0000 \u0000",
+  "description": "Node.js homework with MongoDB",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -23,3 +23,4 @@
     "pino-http": "^10.3.0"
   }
 }
+
