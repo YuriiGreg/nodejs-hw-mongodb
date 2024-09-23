@@ -11,8 +11,9 @@ function setupServer() {
 
   app.use(cors());
   app.use(pinoHttp); 
-  app.use(express.json());
+  app.use(express.json()); 
 
+  
   app.use('/api/v1/contacts', contactRoutes); 
 
 
@@ -22,7 +23,7 @@ function setupServer() {
 
 
   app.use((err, req, res, next) => {
-    const statusCode = err.status || 500;
+    const statusCode = err.status || 500; 
     res.status(statusCode).json({
       status: statusCode,
       message: err.message || 'Internal Server Error',
@@ -37,6 +38,7 @@ function setupServer() {
 }
 
 module.exports = setupServer;
+
 
 
 
