@@ -1,12 +1,12 @@
 const contactsService = require('../services/contacts');
 const createError = require('http-errors');
 
-const getAllContacts = async (req, res) => {
+const getAllContacts = async (req, res, next) => {
     try {
         const contacts = await contactsService.getAll();
         res.json({ status: 200, data: contacts });
     } catch (error) {
-        throw createError(500, 'Failed to retrieve contacts');
+        next(createError(500, 'Failed to retrieve contacts'));
     }
 };
 
@@ -18,14 +18,13 @@ const getContactById = async (req, res, next) => {
         }
         res.json({ status: 200, data: contact });
     } catch (error) {
-        next(error); 
+        next(error);
     }
 };
 
 const createContact = async (req, res, next) => {
     const { name, phoneNumber, contactType } = req.body;
 
-  
     if (!name || !phoneNumber || !contactType) {
         return next(createError(400, 'Missing required fields: name, phoneNumber, or contactType.'));
     }
@@ -38,7 +37,7 @@ const createContact = async (req, res, next) => {
             data: contact,
         });
     } catch (error) {
-        next(createError(500, 'Failed to create contact')); 
+        next(createError(500, 'Failed to create contact'));
     }
 };
 
@@ -73,5 +72,6 @@ module.exports = {
     updateContact,
     deleteContact
 };
+
 
 
