@@ -21,6 +21,10 @@ const contactSchema = new mongoose.Schema({
     enum: ['work', 'home', 'personal'],
     default: 'personal',
   }
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  versionKey: false
+});
 
 module.exports = mongoose.model('Contact', contactSchema);
+

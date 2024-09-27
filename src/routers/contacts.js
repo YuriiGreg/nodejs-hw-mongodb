@@ -3,7 +3,7 @@ const router = express.Router();
 const contactsController = require('../controllers/contacts');
 const { ctrlWrapper } = require('../utils/ctrlWrapper');
 
-// CRUD роутери для контактів
+
 router.get('/', ctrlWrapper(contactsController.getAllContacts));
 router.get('/:contactId', ctrlWrapper(contactsController.getContactById));
 router.post('/', ctrlWrapper(contactsController.createContact));

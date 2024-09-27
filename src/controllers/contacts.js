@@ -4,7 +4,7 @@ const createError = require('http-errors');
 const getAllContacts = async (req, res, next) => {
     try {
         const contacts = await contactsService.getAll();
-        res.json({ status: 200, data: contacts });
+        res.json({ status: 200, message: 'Contacts retrieved successfully', data: contacts });
     } catch (error) {
         next(createError(500, 'Failed to retrieve contacts'));
     }
@@ -16,7 +16,7 @@ const getContactById = async (req, res, next) => {
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
-        res.json({ status: 200, data: contact });
+        res.json({ status: 200, message: 'Contact retrieved successfully', data: contact });
     } catch (error) {
         next(error);
     }
