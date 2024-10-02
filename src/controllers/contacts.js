@@ -1,10 +1,42 @@
-const contactsService = require('../services/contacts');
 const createError = require('http-errors');
+const Contact = require('../models/contactModel');
+
 
 const getAllContacts = async (req, res, next) => {
     try {
-        const contacts = await contactsService.getAll();
-        res.json({ status: 200, message: 'Contacts retrieved successfully', data: contacts });
+        const { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc', type, isFavourite } = req.query;
+
+    
+        const filter = {};
+        if (type) {
+            filter.contactType = type;
+        }
+        if (isFavourite !== undefined) {
+            filter.isFavourite = isFavourite === 'true';
+        }
+
+       
+        const options = {
+            page: parseInt(page, 10),
+            limit: parseInt(perPage, 10),
+            sort: { [sortBy]: sortOrder === 'asc' ? 1 : -1 },
+        };
+
+        const result = await Contact.paginate(filter, options);
+
+        res.json({
+            status: 200,
+            message: 'Successfully found contacts!',
+            data: {
+                data: result.docs,
+                page: result.page,
+                perPage: result.limit,
+                totalItems: result.totalDocs,
+                totalPages: result.totalPages,
+                hasPreviousPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+            }
+        });
     } catch (error) {
         next(createError(500, 'Failed to retrieve contacts'));
     }
@@ -72,6 +104,7 @@ module.exports = {
     updateContact,
     deleteContact
 };
+
 
 
 

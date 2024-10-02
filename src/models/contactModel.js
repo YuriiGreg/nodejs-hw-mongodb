@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2'); 
 
 const contactSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
+    minlength: 3, 
+    maxlength: 20 
   },
   phoneNumber: {
     type: String,
     required: true,
+    minlength: 3, 
+    maxlength: 20 
   },
   email: {
     type: String,
+    minlength: 3,
+    maxlength: 50 
   },
   isFavourite: {
     type: Boolean,
@@ -23,8 +30,12 @@ const contactSchema = new mongoose.Schema({
   }
 }, { 
   timestamps: true,
-  versionKey: false
+  versionKey: false  
 });
 
+
+contactSchema.plugin(mongoosePaginate);
+
 module.exports = mongoose.model('Contact', contactSchema);
+
 
