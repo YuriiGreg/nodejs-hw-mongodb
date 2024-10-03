@@ -1,12 +1,12 @@
 const createError = require('http-errors');
+const contactsService = require('../services/contacts'); 
 const Contact = require('../models/contactModel');
-
+const { createContactSchema, updateContactSchema } = require('../schemas/contactSchemas');
 
 const getAllContacts = async (req, res, next) => {
     try {
         const { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc', type, isFavourite } = req.query;
 
-    
         const filter = {};
         if (type) {
             filter.contactType = type;
@@ -15,7 +15,6 @@ const getAllContacts = async (req, res, next) => {
             filter.isFavourite = isFavourite === 'true';
         }
 
-       
         const options = {
             page: parseInt(page, 10),
             limit: parseInt(perPage, 10),
@@ -44,7 +43,7 @@ const getAllContacts = async (req, res, next) => {
 
 const getContactById = async (req, res, next) => {
     try {
-        const contact = await contactsService.getById(req.params.contactId);
+        const contact = await Contact.findById(req.params.contactId); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
@@ -62,7 +61,8 @@ const createContact = async (req, res, next) => {
     }
 
     try {
-        const contact = await contactsService.create(req.body);
+        const contact = new Contact(req.body);
+        await contact.save();
         res.status(201).json({
             status: 201,
             message: "Successfully created a contact!",
@@ -75,7 +75,7 @@ const createContact = async (req, res, next) => {
 
 const updateContact = async (req, res, next) => {
     try {
-        const contact = await contactsService.update(req.params.contactId, req.body);
+        const contact = await Contact.findByIdAndUpdate(req.params.contactId, req.body, { new: true }); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
@@ -87,7 +87,7 @@ const updateContact = async (req, res, next) => {
 
 const deleteContact = async (req, res, next) => {
     try {
-        const contact = await contactsService.remove(req.params.contactId);
+        const contact = await Contact.findByIdAndDelete(req.params.contactId); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
