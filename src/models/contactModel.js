@@ -27,6 +27,11 @@ const contactSchema = new mongoose.Schema({
     type: String,
     enum: ['work', 'home', 'personal'],
     default: 'personal',
+  },
+    userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',  // Звʼязок з колекцією користувачів
+    required: true,
   }
 }, { 
   timestamps: true,

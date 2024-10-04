@@ -5,7 +5,9 @@ const { ctrlWrapper } = require('../utils/ctrlWrapper');
 const validateBody = require('../middlewares/validateBody'); 
 const isValidId = require('../middlewares/isValidId');  
 const { createContactSchema, updateContactSchema } = require('../schemas/contactSchemas'); 
+const authenticate = require('../middlewares/authenticate');
 
+router.use(authenticate);
 
 router.get('/', ctrlWrapper(contactsController.getAllContacts));
 

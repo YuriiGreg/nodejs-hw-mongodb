@@ -7,7 +7,7 @@ const getAllContacts = async (req, res, next) => {
     try {
         const { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc', type, isFavourite } = req.query;
 
-        const filter = {};
+        const filter = { userId: req.user._id }; 
         if (type) {
             filter.contactType = type;
         }
@@ -43,7 +43,7 @@ const getAllContacts = async (req, res, next) => {
 
 const getContactById = async (req, res, next) => {
     try {
-        const contact = await Contact.findById(req.params.contactId); 
+        const contact = await Contact.findOne({ _id: req.params.contactId, userId: req.user._id }); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
@@ -61,7 +61,12 @@ const createContact = async (req, res, next) => {
     }
 
     try {
-        const contact = new Contact(req.body);
+        const contactData = {
+            ...req.body,
+            userId: req.user._id 
+        };
+
+        const contact = new Contact(contactData);
         await contact.save();
         res.status(201).json({
             status: 201,
@@ -75,7 +80,11 @@ const createContact = async (req, res, next) => {
 
 const updateContact = async (req, res, next) => {
     try {
-        const contact = await Contact.findByIdAndUpdate(req.params.contactId, req.body, { new: true }); 
+        const contact = await Contact.findOneAndUpdate(
+            { _id: req.params.contactId, userId: req.user._id }, 
+            req.body,
+            { new: true }
+        ); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
@@ -87,7 +96,7 @@ const updateContact = async (req, res, next) => {
 
 const deleteContact = async (req, res, next) => {
     try {
-        const contact = await Contact.findByIdAndDelete(req.params.contactId); 
+        const contact = await Contact.findOneAndDelete({ _id: req.params.contactId, userId: req.user._id }); 
         if (!contact) {
             throw createError(404, 'Contact not found');
         }
@@ -104,6 +113,7 @@ module.exports = {
     updateContact,
     deleteContact
 };
+
 
 
 
