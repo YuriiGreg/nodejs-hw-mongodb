@@ -30,7 +30,7 @@ const contactSchema = new mongoose.Schema({
   },
     userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',  // Звʼязок з колекцією користувачів
+    ref: 'User',
     required: true,
   }
 }, { 
