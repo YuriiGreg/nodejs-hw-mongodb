@@ -23,11 +23,19 @@ const registerUser = async ({ name, email, password }) => {
 
 
 const verifyPassword = async (password, hashedPassword) => {
-  return await bcrypt.compare(password, hashedPassword);
+  console.log('Password:', password);
+  console.log('Hashed password:', hashedPassword);
+  const result = await bcrypt.compare(password, hashedPassword);
+  console.log('Password match:', result);
+  return result;
 };
 
 
+
 const createSession = async (userId) => {
+
+  console.log('JWT_ACCESS_SECRET:', process.env.JWT_ACCESS_SECRET);
+  console.log('JWT_REFRESH_SECRET:', process.env.JWT_REFRESH_SECRET);
 
   await Session.findOneAndDelete({ userId });
 
@@ -55,6 +63,10 @@ const removeSession = async (refreshToken) => {
 };
 
 const loginUser = async (email, password) => {
+
+  console.log('JWT_ACCESS_SECRET in login:', process.env.JWT_ACCESS_SECRET);
+  console.log('JWT_REFRESH_SECRET in login:', process.env.JWT_REFRESH_SECRET);
+
   const user = await User.findOne({ email });
   if (!user) {
     throw createError(401, 'Invalid email or password');
@@ -70,6 +82,10 @@ const loginUser = async (email, password) => {
 };
 
 const refreshSession = async (refreshToken) => {
+
+   console.log('JWT_ACCESS_SECRET in refreshSession:', process.env.JWT_ACCESS_SECRET);
+  console.log('JWT_REFRESH_SECRET in refreshSession:', process.env.JWT_REFRESH_SECRET);
+  
   const session = await Session.findOne({ refreshToken });
   if (!session) {
     throw createError(403, 'Invalid or expired refresh token');
