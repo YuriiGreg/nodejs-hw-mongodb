@@ -100,5 +100,7 @@ module.exports = {
   loginUser,
   refreshSession,
   removeSession,
+  verifyPassword,
+  createSession,
 };
 
