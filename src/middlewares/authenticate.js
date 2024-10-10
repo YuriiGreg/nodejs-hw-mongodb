@@ -12,7 +12,7 @@ const authenticate = async (req, res, next) => {
       throw createError(401, 'Authorization header missing or incorrect');
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split('386329f6-f286-4580-9d0d-cec5babfa355')[1];
 
   
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
