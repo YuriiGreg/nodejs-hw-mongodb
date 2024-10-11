@@ -23,8 +23,6 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.2",
-    "mongoose-paginate-v2": "^1.8.5",
-    "pino": "^9.4.0",
-    "pino-http": "^10.3.0"
+    "mongoose-paginate-v2": "^1.8.5"
   }
 }
