@@ -1,14 +1,14 @@
 require('dotenv').config();
-
-const express = require('express');
 const setupServer = () => {
-  const app = express();
+  const express = require('express');
+const app = express();
   const authRouter = require('./routers/auth');
   const contactsRoutes = require('./routers/contacts'); 
   const errorHandler = require('./middlewares/errorHandler'); 
   const notFoundHandler = require('./middlewares/notFoundHandler'); 
-  const cookieParser = require('cookie-parser'); 
 
+  const cookieParser = require('cookie-parser'); 
+  
   app.use(cookieParser()); 
 
   app.use(express.json());

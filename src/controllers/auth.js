@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const User = require('../models/userModel');
-const authService = require('../services/auth');
+const authService = require('../services/auth'); 
 
 const registerUserController = async (req, res, next) => {
   try {
