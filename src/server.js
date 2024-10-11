@@ -7,6 +7,9 @@ const setupServer = () => {
   const contactsRoutes = require('./routers/contacts'); 
   const errorHandler = require('./middlewares/errorHandler'); 
   const notFoundHandler = require('./middlewares/notFoundHandler'); 
+  const cookieParser = require('cookie-parser'); 
+
+  app.use(cookieParser()); 
 
   app.use(express.json());
 
