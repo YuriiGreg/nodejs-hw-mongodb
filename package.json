@@ -2,7 +2,7 @@
   "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
   "description": "Node.js homework with MongoDB",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"

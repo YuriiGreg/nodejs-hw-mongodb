@@ -46,7 +46,7 @@ const createSession = async (userId) => {
     userId,
     accessToken,
     refreshToken,
-    accessTokenValidUntil: Date.now() + 15 * 60 * 1000,
+    accessTokenValidUntil: Date.now() + 60 * 60 * 1000,
     refreshTokenValidUntil: Date.now() + 30 * 24 * 60 * 60 * 1000,
   });
 
@@ -63,7 +63,7 @@ const removeSession = async (refreshToken) => {
 };
 
 const loginUser = async (email, password) => {
-
+  console.log('Attempting to log in with email:', email);
   console.log('JWT_ACCESS_SECRET in login:', process.env.JWT_ACCESS_SECRET);
   console.log('JWT_REFRESH_SECRET in login:', process.env.JWT_REFRESH_SECRET);
 
@@ -72,11 +72,12 @@ const loginUser = async (email, password) => {
     throw createError(401, 'Invalid email or password');
   }
 
-  const isPasswordValid = await verifyPassword(password, user.password);
+   const isPasswordValid = await user.comparePassword(password);
   if (!isPasswordValid) {
+    console.log('Invalid password');
     throw createError(401, 'Invalid email or password');
   }
-
+  console.log('User authenticated successfully');
   const session = await createSession(user._id);
   return session;
 };

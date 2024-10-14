@@ -6,6 +6,9 @@ const Session = require('../models/sessionModel');
 const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
+
+    console.log('Authorization header:', authHeader); 
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw createError(401, 'Authorization header missing or incorrect');
     }
@@ -25,6 +28,8 @@ const authenticate = async (req, res, next) => {
       throw createError(401, 'Access token expired');
     }
 
+    console.log('User authenticated:', user);
+    
     req.user = user;
     next(); 
   } catch (error) {
