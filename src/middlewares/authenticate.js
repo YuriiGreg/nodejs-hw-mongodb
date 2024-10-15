@@ -1,48 +1,23 @@
 const jwt = require('jsonwebtoken');
-const createError = require('http-errors');
-const User = require('../models/userModel');
-const Session = require('../models/sessionModel');
+const createHttpError = require('http-errors');
 
-const authenticate = async (req, res, next) => {
+const authenticate = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return next(createHttpError(401, 'No access token provided'));
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    const authHeader = req.headers.authorization;
-
-    console.log('Authorization header:', authHeader); 
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw createError(401, 'Authorization header missing or incorrect');
-    }
-
-    const token = authHeader.split(' ')[1];
-
     const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-
-  
-    const user = await User.findById(decoded.userId); 
-    if (!user) {
-      throw createError(401, 'User not found');
-    }
-
-    const session = await Session.findOne({ accessToken: token });
-    if (!session || session.accessTokenValidUntil < Date.now()) {
-      throw createError(401, 'Access token expired');
-    }
-
-    console.log('User authenticated:', user);
-    
-    req.user = user;
-    next(); 
+    req.user = { id: decoded.userId };
+    next();
   } catch (error) {
-    
-    if (error.name === 'TokenExpiredError') {
-      return next(createError(401, 'Access token expired'));
-    }
-    if (error.name === 'JsonWebTokenError') {
-      return next(createError(401, 'Invalid token'));
-    }
-    next(createError(401, error.message || 'Unauthorized'));
+    next(createHttpError(401, 'Access token expired'));
   }
 };
 
 module.exports = authenticate;
+
 
